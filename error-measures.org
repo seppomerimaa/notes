@@ -1,0 +1,32 @@
+* Error Measures aka Accuracy Metrics aka Error Metrics
+
+** For Regression
+   - Mean Absolute Error
+   - Mean Squared Error
+     - Punishes larger mistakes more than MAE
+     - Differentiable
+   - Root Mean Squared Error
+     - Has same units as what you're predicting so more interpretable than just MSE
+   - R-Squared
+     - Nicely interpretable in a fixedr range.
+
+** For Classification
+   - Accuracy: percent that you classified correctly.
+   - Confusion Matrix: 4 counts -- true positives (TP), true negatives (TN), false positives (FP), and false negatives (FN)
+   - Recall / Sensitivity: TP / (TP + FN)
+     - What percent of the things that were actually + did we correctly predict were +
+   - Precision: TP / (TP + FP)
+     - What percent of the things that we thought were + were actually +
+   - Specificity: TN / (TN + FP)
+     - What percent of the things that were actually - did we correctly predict were -
+   - F1 Score: weighted average of precision and recall
+     - 2 * (precision * recall) / (precision + recall)
+     - ranges from 0 to 1 with 1 being best
+   - Area under ROC curve: sensitivity (true positive rate) on y-axis vs. 1 - specificity (false postiive rate) on the x-axis
+     - Both range from 0.0 to 1.0 so if the area under that curve is 1.0 you have a 100% chance of ranking a positive example higher than a negative example which is what you want.
+     - Seems like you want to be plotting across different parameter values or something too...unclear on exactly how you construct the curve, though.
+
+** Links
+   - [[https://www.quora.com/How-do-I-choose-error-metrics-for-machine-learning-algorithm][Outline on Quora]]
+   - [[https://machinelearningmastery.com/metrics-evaluate-machine-learning-algorithms-python/][Other stuff]]
+   - [[https://www.kaggle.com/wiki/Metrics][Kaggle Error Metrics Article]]

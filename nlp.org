@@ -1,0 +1,7 @@
+* NLP
+
+** Tools
+   - [[https://spacy.io/usage/spacy-101][spaCy]] "production-focused" NLP toolkit in Python. Does tokenization, PoS tagging, NER, and word vector similarity out of the box. Probably a good thing to try if you're trying to get a prototype out quick.
+     - Big focus on keeping memory usage down and stuffs like that.
+   - [[http://www.nltk.org/][NLTK]] natural language toolkit. Maybe more research / teaching oriented? Or maybe that's just spaCy's marketing pitch :-) Also in Python.
+   - [[https://stanfordnlp.github.io/CoreNLP/][Core NLP]] in Java. Similar to NLTK

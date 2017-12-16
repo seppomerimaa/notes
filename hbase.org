@@ -1,0 +1,39 @@
+* HBase
+
+** Terminology
+*** A table consists of rows
+*** A row consists of a row key and a column
+*** Row key: uninterpreted bytes sorted lexigraphically
+*** A column consists of a column family and a column qualifier
+*** Column families define a set of column qualifiers that are physically colocated among other things
+*** A column qualifier is what you would think of as a SQL column
+*** Cell: a blob of data pointed to by a row key, column family, and column qualifier
+*** Region: a continguous, sorted range of rows for a column family.
+
+** Operations
+*** Get
+*** Put
+*** Scan
+*** Delete
+
+** Writing to HBase
+*** Request gets routed to the correct region server
+*** Request gets added to the write-ahead-log (WAL) just in case we have a crash
+*** Row gets updated in the memstore per the request
+*** Once the memstore gets full it gets flushed to disk in one big batch
+    - A consequence of this is that you can have a KV pair in multiple HFiles so when you do reads you have to read all the HFiles and get the latest value. HBase does compaction to get rid of deleted / expired cells.
+
+** Reading from HBase
+*** Request gets routed to the correct region server
+*** If the row is in the block cache (an LRU read cache, basically), we get the value from there
+*** Else we check the memstore
+*** Else we read all the HFiles, merge the results, and return the correct value
+
+** Important things
+*** HBase is sparse
+*** You don't actually want more than 2-3 column families. Maybe just stick with 1.
+
+** Links
+   - [[https://mapr.com/blog/in-depth-look-hbase-architecture/][Overall architecture]]
+   - [[http://blog.cloudera.com/blog/2012/06/hbase-write-path/][Write path]]
+   - [[https://hbase.apache.org/book.html#datamodel][The HBase book]]

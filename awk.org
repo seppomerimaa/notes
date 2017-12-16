@@ -1,0 +1,148 @@
+* Awk
+
+WTF is awk?
+scripting, text-manipulation language
+
+basic form:
+condition { action }
+	skip condition and action always happens, skip action and you print line
+	
+cat example.txt | awk '{print} END {print "hello" " world"}'
+v1  v2     v3
+foo foobar 123
+bar bar    234
+baz baz    345
+hello world
+
+
+cat example.txt | awk '$2 ~ /^bar/ {print}'
+cat example.txt | awk '$2 !~ /^bar/ {print}'
+
+~ matches
+!~ doesn't match
+
+$0 is the whole line / record
+a line is a record, a record has fields (columns)
+so FS is a field separator aka what separate columns, and you can set that
+
+cat example.txt | awk '{OFS=","; print $1, $2, $3}'
+v1,v2,v3
+foo,foobar,123
+bar,bar,234
+baz,baz,345
+
+cat example.txt | awk '{OFS=","; print $1, $2, $3}' | awk -F "," '{print $1, $2, $3}'
+v1 v2 v3
+foo foobar 123
+bar bar 234
+baz baz 345
+
+You go line-by-line unless your condition is BEGIN or END
+So this prints the 1st & 2nd fields, then hello, then the same for the next line
+cat example.txt | awk '{print $1, $2}{print "hello"}'
+v1 v2
+hello
+foo foobar
+hello
+bar bar
+hello
+baz baz
+hello
+
+print acts like a newline
+
+FS & OFS are column separators
+
+NR is number of records; it changes based on the number of lines you've seen so far
+at example.txt | awk '{print NR": " $0}'
+1: v1  v2     v3
+2: foo foobar 123
+3: bar bar    234
+4: baz baz    345
+
+
+
+double space a file
+cat example.txt | awk '{print $0; print ""}' > moo.txt
+
+3x space
+cat example.txt | awk '{print $0; print ""; print ""}'
+
+# lines in a file
+cat example.txt | awk 'END {print NR}'
+
+print number of fields in whole file
+cat example.txt | awk '{x+=NF;} END {print x}'
+
+
+number the lines in multiple files separately
+awk '{print FNR ": " $0}' example*
+1: v1  v2     v3
+2: foo foobar 123
+3: bar bar    234
+4: baz baz    345
+1: v1  v2     v3
+2: foo foobar 123
+3: bar bar    234
+4: baz baz    345
+
+NB: when you 'cat example* | awk ...' everything from cat gets mushed together and you lose your FILENAME, too
+
+number the lines in multiple files together
+cat example* | awk '{print NR ": " $0}'
+1: v1  v2     v3
+2: foo foobar 123
+3: bar bar    234
+4: baz baz    345
+5: v1  v2     v3
+6: foo foobar 123
+7: bar bar    234
+8: baz baz    345
+
+print a selection of lines (say, 2-3)
+cat example.txt | awk '{ if(NR >= 2 && NR <= 3) { print $0 } }'
+foo foobar 123
+bar bar    234
+
+delete all empty lines in file
+cat moo.txt | awk '{ if(NF>0) { print $0} }' > no_empty.txt
+C02MW7HUFD57:scripts smclaughlin$ cat no_empty.txt
+v1  v2     v3
+foo foobar 123
+bar bar    234
+baz baz    345
+
+print the sum of all the fields in each line
+cat numbers.txt | awk '{x=0; for(i=1; i <= NF; i++) {x+=$i}; print x }'
+10
+26
+42
+
+print the sum of all the fields in the file
+cat numbers.txt | awk '{ for(i=1; i <= NF; i++) { x+=$i } } END {print x}'
+78
+
+print the last field of each line
+cat numbers.txt | awk '{print $NF}'
+4
+8
+12
+
+NB $BLAH tries to eval blah to a number and then turn it into a column var
+
+print every line where the value of the last field in the line is > 5 or w/e
+cat numbers.txt | awk '{ if($NF > 5) { print $0 } }'
+5 6 7 8
+9 10 11 12
+
+
+cat dependencies.txt | awk '{if ($3 == "+-") {print $4}}' | awk '{FS=":"; print "<exclusion>\n\t<groupId>"$1"</groupId>\n\t<artifactId>"$2"</artifactId>\n</exclusion>"}'
+
+Resolve all SVN text conflicts by keeping my copy:
+svn st | awk '{ if($1 == "C") {system("svn resolve --accept mine-full " $2)}}'
+
+
+Possibly my proudest awk moment: strip the trailing junk from a bunch of CSVs all at once:
+for f in *.csv; do mv "$f" $(echo "$f" | awk 'BEGIN{FS="_"}{print $1".csv"}'); done
+
+[[https://github.com/learnbyexample/Command-line-text-processing/blob/master/gnu_awk.md][Awk by Example]]

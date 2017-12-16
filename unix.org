@@ -1,0 +1,139 @@
+* Unix
+
+find . -name "pattern" -print
+
+tar czf name_of_archive_file.tar.gz name_of_directory_to_tar
+
+df -h to see total disk space
+
+lid -g datascience
+	see members of the group datascience
+	
+sudo usermod -a -G datascience kdipasupil
+	add kevin to datascience usergroup
+
+Navigation
+C-A -- go to beginning of the line
+C-E -- go to the end of the line
+M-B -- go back one word (non-alphanumeric delimiters)
+M-F -- go forward one word (non-alphanumeric delimiters)
+C-B -- go back one character
+C-F -- go forward one character
+C-X C-X -- alternate cursor with its old position
+
+
+Cut & Paste
+C-W -- cut one word backwards (whitespace delimiter)
+M-bksp -- cut one word backwards (non-alphanumeric delimiter)
+M-D -- cut next word
+C-K -- cut to the end of the line
+C-U -- cut to the beginning of the line
+C-Y -- paste (aka yank in emacs terminology)
+C-H -- deletes the previous character
+C-X C-E -- edit current line in the $EDITOR program
+
+
+Text Manipulation
+C-T -- transpose current character with the previous one
+M-T -- transpose the current word with the previous one
+M-U -- uppercase every character from the cursor to the end of the current word
+M-L -- lowercase every character from the cursor to the end of the current word
+M-C -- capitalize the character under the cursor and move to the end of the word
+
+
+History
+C-_ -- incremental undo
+M-R -- restore all changes to line
+C-P -- previous command
+C-N -- next command
+C-R -- history search
+    C-J -- end incremental search
+    C-G -- abort search and restore original line
+    C-O -- execute found command
+    C-R -- incremental search backwards
+    C-S -- incremental search forwards
+CY-Y -- previous first argument
+M-. -- previous last argument
+M-number M-. -- previous n-th argument
+M-# -- comment out the current line
+
+
+
+
+echo "lalalala" | hex dump -C --> dumps the hex encoding of whatever you pipe to it, -C also prints the normal representation
+as you're typing, ctrl+v puts you in literal mode, so you can actually type a tab, say, instead of bash trying to autocomplete things.
+
+
+info="20 packets in 10 seconds"
+	normal variable assignment
+echo $info
+echo "foo $info"
+	to print stuff out however you like
+	
+wc -c < file
+	get the length of a file in bytes
+	
+echo /path/to/file{_original,_copy}
+	the base{_foo,_bar} generates two strings with a  space between them e.g.
+	base_foo base_bar
+
+	So you could do
+	cp /path/to/file{,_copy}
+	mv /path/to/file{,_old}
+
+Similarly
+	{a..z} gets you the whole alphabet
+	
+echo {a,b,c}{1,2,3}
+	gets you a1 a2 a3 b1 b2 b3 c1 c2 c3
+	
+str=break-this-up
+IFS=- read -r x y z <<< "$str"
+	splits str up using '-' as the delimiter to split on
+	So IFS=^ read -r ... would split on ^ and so on
+	
+read modType fileName <<< $(svn st | head -1)
+<<< lets you pass a string straight into read
+$(...) is the substitution operator --> the ... bit gets run and its output is returned
+
+svn st | while read modType filePath; do if [ "$modType" = "M" ]; then echo "$filePath"; fi; done
+svn st | while read modType filePath; do if [ "$modType" = "M" ] || [ "$modType" = "A" ]; then echo -n "$filePath "; fi; done; echo ""
+gets the list of modified or changed files from svn st
+
+
+want:
+	- dump everything to new/existing RB
+	- dump everything to a change list
+	- dump everything in a change list to new/existing RB
+
+
+RESULTS=$(ssh prod-lex-oozie-lv-101.prod.marinsw.net "hadoop fs -test -d /data/foobarbas")
+echo $?
+> this prints the return code of the remote script you executed O___o
+
+Cut out the first part of each file name in the current dir, delimited by '.'
+ls | cut -d . -f 1
+
+Add the beginning of the name of each file to each line of the file
+ls | cut -d . -f 1 | while read x; do awk -v x=$x 'BEGIN{OFS=","}{print $1, x}' < "$x.txt"; done
+
+
+
+chgrp -- change group of a file
+sg -- run a process with a different group ID than your default one
+
+
+dig -- DNS lookup util
+tcpdump -- [[https://jvns.ca/tcpdump-zine.pdf][guide]]
+  - see also Wireshark
+
+dstat -- prints network / disk use per second. linux only.
+strace -- prints system calls that your program makes. linux only.
+
+nc (netcat) -- hand crafted network requests
+netstat -- what programs are listening to what ports?
+
+perf + perfreport -- profile your c / jvm / js programs and see which functions you're spending most of your time in. Can work for other things like Python / Ruby that are farming out work to C libs. Linux only.
+
+** Links
+   - [[http://www.commandlinefu.com/commands/browse/sort-by-votes][Popular unix commands]]

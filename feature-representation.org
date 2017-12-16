@@ -1,0 +1,11 @@
+* Feature Representation
+
+** TF-IDF
+   - 
+** Word2Vec
+** One-hot: make your categorical data usable by continuous functions like logistic regression
+** Bucketing: the reverse of one-hot, sorta -- take continuous features and make them discrete
+** Word counts -- like one-hot but with a little more information
+** n-grams
+** Polynomial expansion -- the synthetic features trick from linear regression
+** PCA (low priority)

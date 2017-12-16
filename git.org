@@ -1,0 +1,59 @@
+* Git
+
+git add -u --> stages modified or removed files
+git add . --> stage new or modified files
+
+git checkout -t -b new-branch-name origin/develop
+git push -u origin new-branch-name
+
+Creating a new repo:
+- gotta do it through the website
+- then locally,
+	- git init
+	- git remote add origin hhtps://...
+	- git push origin master
+	- also maybe git branch -u origin/master master
+	
+	
+Removing a branch (after a PR)
+local:
+git branch -D branch-to-delete
+
+remote:
+git push origin --delete branch-to-delete
+
+git fetch release
+	this'll pull the latest from the marin org
+	
+	
+Just watch this:
+http://mirror.linux.org.au/linux.conf.au/2013/mp4/Git_For_Ages_4_And_Up.mp4
+
+
+git stash
+git stash list
+git stash pop
+	does what you would think
+git stash apply
+	like pop, but doesn't remove from stash list
+git stash -k -u
+	-k stashes just unstaged stuff
+	-u also stashes untracked
+	
+	
+git add .
+git commit --amend
+
+
+Prune all local branches that have been merged into your current branch (do this from develop):
+git branch --merged | xargs git branch -d
+
+Prune branches not on remote (looks like this means ones not set up to track remote -- ones that are tracking remote but where remote has been deleted seem like they're not getting pruned)
+git remote prune origin
+
+Prune remote branches that have already been merged (scarytown~)
+git branch -r --merged | grep origin | grep -v develop | cut -d"/" -f 2 | xargs git push origin --delete
+
+
+Split out a subtree into its own repo:
+http://stackoverflow.com/questions/359424/detach-move-subdirectory-into-separate-git-repository/17864475#17864475

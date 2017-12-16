@@ -1,0 +1,84 @@
+gt	change tabs
+gT	change tabs prev
+3gt 	jump 3 tabs forward
+etc.
+
+
+Running a file from within vim
+- :!scriptname works for bash
+- for others, do 
+	:set makeprg=python\ %
+	:make
+- or set makeprg then bind something like ,t
+	:map ,t :w\|:make
+	so that you write the file and then run it in one go
+You've gotta do these each time you start up vim...probably could add them to your vimrc if you wanna keep 'em around?
+
+
+Visual mode
+shift+v then j/k to highlight by line
+> indents by a tab
+< un-indent
+once you've done one of those, . repeats while u undoes
+http://vim.wikia.com/wiki/Shifting_blocks_visually
+
+** Links
+   - [[https://github.com/LevelbossMike/vim_shortcut_wallpaper][Shortcut]]
+   - [[http://codyveal.com/posts/vim-killer-features-part-1-text-objects/][Vim text objects]]
+   - [[https://blog.carbonfive.com/2011/10/17/vim-text-objects-the-definitive-guide/][More vim text objects]]
+   - [[http://www.brianstorti.com/vim-registers/][Vim registers]]
+   - [[https://blog.interlinked.org/tutorials/vim_tutorial.html][General Vim tutorial]]
+
+** Text objects
+   - i/a s -- sentence
+   - i/a p -- paragraph
+   - i/a w -- word, no whitespace
+   - i/a + ] or ) or " or > -- same deal
+
+** Movements
+   - ( ) -- move by sentence.
+   - { } -- move by paragraph.
+
+** Registers
+   - "ky -- yank whatever's highlighted into register k
+   - "Ky -- yank whatever's highlighted and *append* to register k
+   - "kp -- paste whatever's in register k
+   - C-k -- while in insert mode, paste whatever's in register k
+   - :reg -- view all registers
+*** Special Registers
+    - "" is the unnamed register. It's where anything you yank or delete goes. So ""p is the same as just p, ""y is the same as y, etc.
+    - 0 is similar, but only holds things you yank, not deletes.
+    - 1-9 hold the most recent deletes from newest to oldest.
+    - % holds the current file path, read-only.
+    - : holds the most recently executed command. So @: repeats that.
+    - # is, roughly, the most recent other file you've edited
+    - + is the system clipboard on *nix systems, so "+p will paste from system clipboard
+
+** Marks
+   - mk -- set mark k to current cursor position
+   - 'k -- jump to beginning of line containing mark k
+   - `k -- jump to mark k itself
+   - :marks -- see all marks
+   - :delmarks a b c -- delete marks a, b, and c
+   - :delmarks! -- delete all marks
+*** Special Marks
+    - '' -- jump to beginning of line that you last jumped from. Ie, jump back.
+    - `` -- same but to exact position you jumped from
+    - `[ and `] -- jump to beginning/end of last yanked text
+      - Doesn't work quite right in emacs -- jumps to last change, not yank. Can use g v to restore last visual selection which will get you most of the way there.
+    - `< and `> -- jump to beginning/end of last visual selection
+
+** Command magic
+   - ; to repeat last f/t/F/T, ',' to repeat but going in the other direction
+   - . to repeat last normal mode command. E.g dw . . . will delete 4 words
+   - @: to repeat last command mode command
+   - * to search for next occurrence of current word. # to search in reverse.
+
+** Abbreviations
+   - :ab rtd read the docs -- create an abbreviation that expands 'rtd' to 'read the docs' after space/punctation
+   - :una rtd -- delete that abbreviation
+   - :ab -- view all abbreviations
+   - :abc -- clear all abbreviations
+   - NB: none of this works in evil-mode ... at least out of the box
+
+Here is some text to allow us to try out different vim object motions. So this second sentence will help with that a little as well.  And a little more text here too.

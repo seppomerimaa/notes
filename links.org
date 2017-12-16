@@ -1,0 +1,54 @@
+
+* [[https://github.com/zeit/hazel][Hazel: something we found]]
+  
+  <2017-08-04 Fri>
+* [[http://achariam.com/elyxel/][Elixir Server from Scratch]]               :elixir:ubuntu:nginx:self:hosting:
+  <2017-08-15 Tue>
+* [[https://www.confluent.io/blog/publishing-apache-kafka-new-york-times/][Monolog / Kafka architecture at the NYTimes]] :kafka:monolog:event:sourcing:cqrs:
+  <2017-09-07 Thu>
+* [[https://www.otexts.org/fpp][Forecasting principles and practice]]     :forecasting:timeseries:math:ml:ds:
+  <2017-09-07 Thu>
+* [[http://vita.had.co.nz/papers/tidy-data.pdf][Tidy data]]                                         :practices:ds:dataframes:
+  <2017-09-07 Thu>
+* [[https://www.citusdata.com/blog/2017/08/09/principles-of-sharding-for-relational-databases/][Principles of Sharding for Relational Databases]]        :sharding:dbs:rdbms:
+  <2017-09-07 Thu>
+* [[https://www.kitchensoap.com/2017/08/12/multiple-perspectives-on-technical-problems-and-solutions/][Architecture Reviews]]        :software:engineering:architecture:design:orgs:
+  <2017-09-15 Fri>
+* [[http://tomasp.net/academic/papers/fsharp-data/][Types from data: making structured data first class citizens in fsharp]] :fsharp:f#:types:data:
+  <2017-09-15 Fri>
+* [[http://www.lihaoyi.com/post/HowtoconductagoodProgrammingInterview.html][How to conduct a good programming interview]]            :interview:li:haoyi:
+  <2017-09-15 Fri>
+* [[http://www.cs.utexas.edu/users/EWD/transcriptions/EWD10xx/EWD1054.html][On hygiene, intellectual and otherwise]] :thinking:beliefs:dijkstra:surgery:sterilization:
+  <2017-09-18 Mon>
+* [[https://a-little-book-of-r-for-time-series.readthedocs.io/en/latest/][A Little Book of R for Time Series]]               :stats:math:time:series:r:
+  <2017-09-18 Mon>
+* [[https://robjhyndman.com/hyndsight/][Hyndsight -- Rob Hyndman's Timer Series Stats Blog]] :stats:math:time:series:r:
+  <2017-09-18 Mon>
+* [[https://tomassetti.me/guide-parsing-algorithms-terminology/][A Guide to Parsing]]                                   :parse:parsing:parser:
+  <2017-09-28 Thu>
+* [[https://github.com/yangshun/tech-interview-handbook][Tech Interview Handbook]]                                         :interview:
+  <2017-09-28 Thu>
+* [[https://cternus.net/blog/2017/10/10/questions-i-m-asking-in-interviews-2017/][Questions to ask in interviews]]             :interview:job:career:practices:
+  <2017-10-17 Tue>
+* [[https://jvns.ca/blog/2013/12/30/questions-im-asking-in-interviews/][Questions to ask in interviews 2]]           :interview:job:career:practices:
+  <2017-10-17 Tue>
+* [[https://qntm.org/abolish][Don't abolish timezones]]                    :time:timezones:sillyprogrammer:
+  <2017-10-26 Thu>
+* [[https://github.com/learnbyexample/Command-line-text-processing/blob/master/gnu_awk.md][Awk by example]]                                               :awk:tutorial:
+  <2017-10-26 Thu>
+* [[http://ucanalytics.com/blogs/wp-content/uploads/2017/08/ARIMA-TimeSeries-Analysis-of-Tractor-Sales.html][ARIMA in Python]]                 :arima:python:ml:ds:timeseries:forecasting:
+  <2017-11-02 Thu>
+* [[https://arxiv.org/pdf/1710.07035.pdf][Generative Adversarial Neural Networks]] :ganns:nns:neuralnets:deep:learning:ml:
+  <2017-11-02 Thu>
+* [[http://lamport.azurewebsites.net/video/videos.html][TLA+ videos]]                                         :formal:methods:cs:tla:
+  <2017-11-07 Tue>
+* [[https://stats385.github.io/][Theories of Deep Learning]]                                 :dl:nns:stats:ml:
+  <2017-11-07 Tue>
+* [[https://distill.pub/2017/feature-visualization/][NN Feature Visualization]]                :dl:nns:visualization:debugging:ml:
+  <2017-11-07 Tue>
+* [[https://blog.acolyer.org/2017/11/06/statistically-rigorous-java-performance-evaluation/][Statistically Rigorous Java Performance Evaluation]] :acolyer:perf:java:benchmark:stats:
+  <2017-11-28 Tue>
+* [[https://blog.acolyer.org/2017/11/07/virtual-machine-warmup-blows-hot-and-cold/][Virtual Machine Warmup Benchmarking]]         :perf:warmup:vm:java:benchmark:
+  <2017-11-28 Tue>
+* [[http://pushtrain.club/][McFunley on Continuous Delivery]] :cd:dan:mckinley:mcfunley:practices:people:
+  <2017-12-07 Thu>

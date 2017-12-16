@@ -1,0 +1,203 @@
+* Conferences
+
+** Data Science Summit 2016
+Chronological
+
+Day1
+
+Keynote
+- XGBoost: (dstributed?) boosted decision tree library
+- Criteo is doing distributed logistic regression. Hm I wonder what paper they were reading :-p
+- Turi is doing batch training + "online re-ranking" instead of pure online learning -- much less fiddly to tune correctly, details to follow in another talk
+- from the dude next to me is working at ARM, using curiosity-driven reinforcement learning. Builds exploration into your objective function instead of flipping between explore and exploit modes
+	- http://journal.frontiersin.org/article/10.3389/fnbot.2013.00025/full
+- don't silo data scientists so that they're in small groups working on projects -- end up duplicating a bunch of feature engineering work that really should be reusable.
+
+DeepDive
+- systems to allow non-engineers to extract features from not very structured data. All Jupyter-driven, not super relevant for what we're doing.
+- Locally Interpretable, Model-Agnostic Explanations -- again, the recurring theme of model interpretability
+	- https://homes.cs.washington.edu/~marcotcr/blog/lime/
+
+Petuum+
+- wants to be a better distributed computation engine than Hadoop / Spark, using a P2P architecture. Seems very Quixotic / out of touch with reality, but maybe that's just because his slides are fugly.
+
+Myria
+- a big data management system
+- but they're benchmarking it against Spark...because...uh?
+- they claim they can do three way joins "cheaply", see Balazinska SIGMOD 2015
+	- http://www.sigmod2015.org/toc_sigmod.shtml
+
+ML for Analyzing Complex Time Series Data -- Emily Fox @ U Washington
+- HMMs + Bayesian non-parametrics to segment time series -- totally unsupervised, can do interesting anomaly detection with this
+- dealing with sparse data: clustering. Latent factor model + Bayesian non-parametrics.
+	- https://arxiv.org/abs/1505.01164 might be an interesting read
+	
+Hops
+- distributed metadata server / namenode for HDFS
+- works for yarn, too
+- allows much more fine-grained access control b/c you have enough throughput that you can actually build interesting abstractions on top of the namenode
+- allows multitenancy for Zeppelin (hey~)
+- hops.io
+- bonus: they have the crocodile hunter and Fro-bama smoking on the homepage. Dang.
+
+Apache Arrow -- Wes McKinney, creator of Pandas
+- some sort of in-memory shared data format
+- one goal is to make it easier to write file loaders and share the low level code between languages -- they did a POC for Parquet called Feather where they can read it in R, write it out, read it in Python, write it again, and read it back into R
+- another appears to be to share in-memory datasets between, say, Python and Scala / Spark. Which would be dope.
+
+Using Graphs for Community Detection
+- community detection + label propagation fed into collaborative filtering so that they can recommend course materials written by teachers to other teachers
+- interesting the sorts of whacky, ad hoc stuff people cook up
+
+Kaggle
+- competitions hit their accuracy saturation points quite quickly, usually
+- one super popular technique is boosted trees (XGBoost) -- good for structured data, you spend 20% of your time tuning params and 80% feature engineering
+- the other super popular technique is deep learning -- CNN for vision, RNN for time series / speech. You spend 80% of your time tuning params and 20% feature engineering.
+- pick your poison, basically.
+
+Design for X
+- ConcurLabs is doing ETL in PySpark, then do a collect and use SKLearn / GraphLab / whatever -- prioritize iteration speed
+- they do Google Ventures-style design sprints except they actually have to build something minimal to see what works. 24hours - 1 week, usually. Should read up on how design sprints work and see if we can try doing same.
+- check out their blog / github
+- design for knowledge gaps: try to build reciprocal data apps a la Facebook's suggested photo tags where every benefits from human action and you get improved data / algorithm feedback
+
+DSSTNE
+- there's a Back to the Future joke here a/b how focused they are on dealing with sparse matrices
+- tl;dr "our curve is better than Google's curve"
+
+Dealing with Never-ending Projects
+- projects almost never fail / drag on and on for technical reasons, they drag on because we're bad at dealing with the human factor: specs are vague, etc.
+- get customer input -- look for underlying problems, don't just go on what they say they want, don't start thinking about solutions at first, this'll prevent you from digging deeper
+- talk with customers about their success / failure scenarios, try to understand what they're afraid of
+- be mindful of how they feel about you -- you're a Data Scientist, fancy title, you do Math and all sorts of other mysterious, scary stuff. Be human, try to help them see that.
+- building consensus -- try talking from both roles, yours and the customers's
+- milestones and regular, scheduled communication are a Good Thing
+
+Day 2
+
+NLP Pipelines
+- need lots of domain specific knowledge for NLP
+- Atigeo is using Spark (Scala, mostly) + Hive + Oozie + some Java libraries
+- UIMA -- text annotation framework written in Java -- gotta bring a bunch of domain expertise to write good extractors
+- next step is adding more automatic feature extraction -- word2vec / MLLib combined with hand-coded feature extractors to build a semantic dictionary of medical terms
+
+Graph Viz
+- had to leave after 10 minutes, but the guy mentioned using community detection / graph connected components to detect medicare fraud -- fraud is built on fabrication of relationships and these look different than the real sort.
+	- Idea: do similar for clicks: make a graph of user / keyword, see if their are weird shapes to it
+	
+SKLearn -- Andreas Mueller, creator of SKLearn
+- simplicity, consistency, flat class hierarchy, limited number of types -- all in service of maintainability and extensibility
+- deleting code is always a good thing :-)
+- guts are in Cython, interface in Python because holy shit Python is slow. This makes it hard for Joe Shmoe data scientists to contribute (so much for Cython's whole raison d'etre)
+- correctness testing: people test against the SKLearn implementation, so that sucks for us
+- distributed implementations: probably never gonna happen, would need a total rewrite of everything
+
+ML in Production at Turi
+- they read that same FB paper: boosted trees + Bayesian Online Probit Regression (logistic fine too)
+- instead of predicting clicks, they're re-ranking things.
+- basically, train whatever batch model you want, then this re-ranking model gets the prediction + metadata + real time data and produces scores for all of your possible recommendations and you re-order them accordingly
+- re-ranker not nearly as finicky to tune as pure online models are
+- boosted trees: make an ensemble of DTs, drop examples through them, toss the predictions, and use the decision nodes and which way you went as features
+
+Data Science Tribes -- Pedro Domingos
+- Symbolists: use logic, induction, etc. Challenge: how do you compose knowledge. Apps: NLP
+- Deep Learning folk: yeah. Challenge: how do you assign credit / blame to features for predictions? Apps: duh
+- Genetic algorithms: represent function as trees, go through a cycle of fitness testing, reproduction, swapping subtrees among most fit, etc. Challenge: how do you extract structure from data?
+- Bayesians. Challenge: how do you quantify uncertainty / take it into account?
+- Analogists: Hofstadter and friends.  Challenge: how do you quantify similarity / difference? Apps: SVM, kernel machines.
+- Unifying all of these: use Markov logic networks as representation, a user-defined objective function, then a genetic algorithm for the formula and deep learning for the weights in the formula. Voila, you have a universal learner. Apparently. Maybe.
+- this guy seems like too eager of a Platonist / "The Maths, they are the only real things~" / AI dummy. Interesting to think about.
+- also shit, dude, read your Quine already.
+
+DS @ Salesforce -- Robin Glinton
+- context: small team of 4 data scientists and some supporting engineers -- need to really invest in tooling to be as productive as they need to be
+- good datapipelines are crucial
+- need: readable, detailed schema, easy summary stats, good handling of dataset lineage, discovery, reporducibiltiy and recoverability. They use a tool called Alation (some sort of SaaS data store thingy. no open source. oh well.)
+- optimize for experimentation 
+	- automate feature extraction: they do t-tests to look for big differences, look for significant correlations,
+	  outliers, high / low variance, all automatically, then they're easily available to data scientists
+	- they use Domino to version both their models and their datasets -- really important for tinkering sanely
+- deployment: maintaining / monitoring the goodness of models is tricky
+	- they monitor for drift on important metrics, set thresholds for accuracy metrics, get alarmbells
+	- a bunch of Spark driving it, one engineer built the whole thing
+	- all conf driven -- easy for data scientists to set up
+
+ML Lessons from Pinterest -- Jure! :-D
+- know your data: how you define datasets and labels is far more important than model and feature selection
+- cautionary tale 1: distribution of features / labels on prod data is different than the test set. Sad times!
+- cautionary tale 2: they trained a model on data that was 6 months old. All great till they deployed to prod. Oops!
+- more data, more features, more iteration are all key for getting better
+- ML systems tend to mask bugs: your accuracy just goes down a little. Need to design for debug-ability and interpretability
+- automation encourages experimentation and pays for itself in spades
+	- need to be able to very easily regularly retrain models
+	- prod models must be trivially reproducible by new people or you're in trouble
+- model management
+	- storage, search, deployment, documentation, review -- all things you want
+	- they have a config / DSL-driven system -- explicit > implicit
+- you need both eng. and DS people
+- decoupling infrastructure and modeling is v. hard and v., v., v. worth it
+
+Panel
+- start simple -- makes it much easier to iron out issues because simpler models are easier to debug / interpret, then you can add complexity.
+	- aka, if you're not doing image recognition, deep learning probs shouldn't be the first thing you reach for
+- invest in iteration speed x10,000
+- for consumer-facing features, 90% of what you try should fail. If you're succeeding more than that you're not moving fast enough or aren't taking enough risks
+- automate all the things. Do it x3, automate it.
+
+Explore v. Exploit at Pandora
+- nada. Boo.
+
+Numenta
+- check out their NuPIC open source project. Sorta same idea as NNs: take inspiration from brain structure and they come up with their own model that's 1) good at streaming anomaly detection / prediction 2) doesn't require all the tuning that NNs do
+- guthub.com/numenta
+	- there's also an open dataset called NAB -- time series / anomaly detection data
+- other anomaly detection techniques / tech they compared to: multinomial relative entropy, Twitter ADVEC, Etsy Skyline, sliding Gaussian thresholds
+
+Crowd Flower
+- they have lots of open datasets. Neat.
+
+
+
+=================================
+
+By Topic
+
+Recurring Themes
+- blah blah deep learning
+- blah blah deep learning is overhyped. Sorta. Kinda. Maybe.
+- boosted trees are all over the place
+- interpretable models are something everyone wants
+- Seems like the FB "Predicting Clicks on Ads" paper was cited in like half these slide decks
+
+Best Practices / Real World Advice
+- invest in data pipelines and datastores so that you're not wasting weeks and weeks of time getting your data, figuring out its schema and quirks, etc.
+- optimize for iteration speed / rapid experimentation (this x10,000)
+	- automated or at least easily reusable feature extraction and feature engineering tools / libraries
+	- needs to be easy to retrain models
+- reproducibility is extremely important -- can't have important CSVs just floating around, can't lose your params for how to train your model
+- separate infrastructure from modeling -- configs / DSLs for the data scientists
+- need to think about / invest in deployment and monitoring
+	- continuously re-validate goodness of your models, set thresholds for acceptable error rates, distribution
+	  means, etc., and alert when those are violated
+
+Things to Check Out
+- XGBoost: boosted decision tree library for feature eng. that everyone and their mother is using to win on Kaggle.
+- Curiosity-Driven Reinforcement Learning: new spin on tackling the old explore / exploit trade off
+	- http://journal.frontiersin.org/article/10.3389/fnbot.2013.00025/full
+- Locally Interpretable, Model-Agnostic Explanations -- how do we make models interpretable?
+	- https://homes.cs.washington.edu/~marcotcr/blog/lime/
+- Hidden Markov Models + Bayesian non-parametrics to segment complex time series data and do anomaly detection
+- Latent Factor Models + Bayesian non-parametrics to cluster sparse time series data
+	- https://arxiv.org/abs/1505.01164
+- the ConcurLabs blog / github for stuff on doing design sprints in data science and their PySpark / SKLearn / GraphLab stack -- they're big on high-speed iteration.
+- UIMA -- text annotation / feature extraction framework written in Java (Atigeo uses it in Scala)
+
+Ideas
+- do use community detection / connected components in a graph of users and keywords as a feature for fraud detection.
+
+Neat Things
+- Hops.io -- distributed namenode for HDFS
+- Apache Arrow -- interoperable, in-memory data structure standard 
+	- http://blog.cloudera.com/blog/2016/02/introducing-apache-arrow-a-fast-interoperable-in-memory-columnar-data-structure-standard/
+- lessons from Kaggle -- blue pill: boosted trees, spend 80% of your time feature engineering, 20% tuning; red pill: deep learning, spend 80% of your time tuning, 20% feature engineering
+

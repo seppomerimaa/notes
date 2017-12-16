@@ -1,0 +1,6 @@
+* Pyspark
+
+** Links
+   - [[http://blog.cloudera.com/blog/2016/02/making-python-on-apache-hadoop-easier-with-anaconda-and-cdh/][Setting up Anaconda on Cloudera]]
+   - [[https://developer.ibm.com/hadoop/2017/06/30/scheduling-spark-job-written-pyspark-sparkr-yarn-oozie/][Oozie + PySpark]]
+   - [[http://tech.magnetic.com/2016/03/pyspark-carpentry-how-to-launch-a-pyspark-job-with-yarn-cluster.html][PySpark on yarn]]

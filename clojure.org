@@ -1,0 +1,20 @@
+* Clojure
+
+** Setup
+   brew install leiningen
+   lein new app clojure-noob
+   
+   add clojure-mode, cider, and rainbow-delimiters to emacs
+
+** Commands
+    - open file in emacs, M-x cider-jack-in to open accompanying repl
+    - C-c C-z to switch between file and repl
+    - C-x C-e to eval in file and see output in repl -- neat!
+    - C-c C-k to compile code so that the repl knows about it
+    - C-c C-d C-d to see documentation for whatever the cursor is on top of
+*** Paredit
+    - M-( to wrap something in parens
+    - C-( to swallow whatever's right of this S-expr into the S-expr
+    - C-) does the same but in the other direction
+    - C-} and C-{ undo that glomming
+    - [[http://danmidwood.com/content/2014/11/21/animated-paredit.html][See more here]]

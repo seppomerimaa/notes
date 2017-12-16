@@ -1,0 +1,13 @@
+* Software Design
+** [[https://www.youtube.com/watch?v=zhpWhkW8kcc][The Tower of Abstraction]], Alex Martelli
+*** All abstractions leak --> leak strategically
+*** Subclassing concrete classes is a pretty bad idea.
+*** Hooks, DI, etc. are good ieas.
+** Refactoring, Martin Fowler
+*** Factor and refactor; try a thing and undo a thing --> continuous change and continuous doing and undoing until you arrive where you need to go.
+*** Small steps are the best steps.
+** [[https://www.youtube.com/watch?feature=youtu.be&v=8bZh5LMaSmE&app=desktop][All the Little Things]], Sandi Metz
+*** Make seams for refactoring
+*** Duplication is cheaper than the wrong abstraction
+*** Shallow, narrow inheritance hierarchies are fine. Concrete classes at leaf nodes only. Leaves use all the logic in the superclass.
+*** Things usually get worse (more complex) before they get better as you're refactoring.

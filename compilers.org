@@ -1,0 +1,75 @@
+#+STARTUP: latexpreview
+
+Note to self: C-c C-x C-l to preview a single fragment
+C-u C-c C-x C-l to preview subtree
+C-u C-u C-c C-x C-l to preview whole buffer
+C-c C-c on preview image to go back to text.
+
+* Compilers
+
+** Structure of Compilers
+    - Lexical Analysis: tokenization
+    - Parsing: build up AST from tokens
+    - Semantic Analysis: try to understand the "meaning" of the program. Usually this means catching inconsistencies.
+      - This is hard.
+    - Optimization
+    - Code generation: produce assembly or whatever your target language is.
+
+** Lexical Analysis
+   - Need to both tokenize and _classify_ the tokens: e.g. identifiers, whitespace, integers, keywords, parentheses and other bits of cruft, etc.
+   - And then you need to communicate that to the parser.
+   - Input: a raw string. Output: a sequence of (class, sub string) pairs that are fed into the parser.
+     - Those (class, sub string) pairs are what we call "tokens"
+   - You're going to need lookahead sometimes, that's just life.
+   - Using angle brackets for generics e.g. List<Int> makes life harder than it needs to be.
+   - $e = 5$
+
+*** Regular Languages & Regular Expressions
+    - This is how we usually define different tokens / token classes for a language.
+    - Regular language definition: you have an alphabet of chars $\Sigma$. The grammar of your language is any $c \in \Sigma$, the empty string $\epsilon$, and the concatenation, union, or repetition of those.
+    - [[file:parsers.org][See also notes on Sipser Ch. 1]]
+
+*** Formal Languages
+    - Definition: has an alphabet $\Sigma$ and consists of a set of strings of characters drawn from that alphabet.
+      - So Regular Languages are a subset of Formal Languages.
+      - Another example: all C programs (alphabet is the set of ASCII characters).
+    - Meaning function: a function L that maps strings from the formal language to meanings M.
+      - e.g. L(A + B) = L(A) u L(B) --> the language of A union B is the language of A unioned with the language of B.
+      - Better example: Arabic and Roman numerals (left hand side) map to same meaning (right hand side).
+      - What's the point of this? There can be many expressions that map to a single meaning (L is many-to-one). So this formalization lets you separate the two -- separate syntax and semantics...which can let you vary your syntax while preserving your semantics, *which is the basis of many compiler optimizations!*
+
+*** Actually Doing LA
+    - Define regexes for all of your lexemes (digits, identifiers, lparen, rparen, etc...)
+    - Say you have some input string of n chars
+    - Break off a prefix of length x <= n that matches a lexeme regex and then find the next prefix.
+      - Obvious question: if you have multiple prefixes that work...what do you do? E.g. '=' vs. '=='. Answer: "maximal munch" -- choose the longer one. Just a heuristic.
+      - Usually you're gonna need precedence too, like keywords are higher precedence than identifiers.
+      - If you get stuck on something that isn't in your language, you need to catch that (think _ in a Scala pattern match) and provide nice error messages. Doing a catchall ensures you don't just crash out during parsing.
+    - Translate regexes to Nondeterministic Finite Automata
+    - Translate NFAs to DFAs
+    - Do a table-driven implementation of DFAs for fast, single-pass lexing o.O
+
+*** Regexes to NFAs
+    - itty bitty FAs to accept individual letters.
+    - Concatenation: e.g. AB. Modify machine that accepts A so that its final state has an epsilon (freebie) transition to the start state of B. The end. So this is an NFA because of that epsilon transition.
+    - Union: e.g. A+B. Special start state with epsilon transitions to the machines for A and B. Epsilon transitions from their accept states to a real, final accept state.
+    - Repetition: e.g. A*. Basically A with an epsilon self-loop around the whole machine for repeats and a special epsilon transition from the faux-start to the accept state for the 0 repetitions case.
+
+*** NFAs to DFAs
+    - Epsilon Closure of some state X is the set of X and all states you can reach from X by following epsilon transitions.
+    - Side bar on possible # of states in an NFA: there are just N states. Once you start doing your rewrites of your epsilon closures really what you want to know is how many subsets of states are there -- that's $2^N - 1$ which while large is a *finite* number.
+    - Replace NFA start state with the epsilon closure of that start state. That's the DFA's start state.
+    - Give the DFA one state for each subset of the NFA's states.
+    - Add a transition function from a given state in the DFA to another if there's a transition function from the matching subset of state in the NFA to the other.
+
+*** Implementing DFAs
+    - A grid / dict of dicts that maps 1) from an index k to a state then 2) from an index t to a new index k'. Aka the rows / first dict represent all possible states. Then the sub-array within that lets you look up a new state index for a given transition t.
+    - You may just want to use the NFA directly. You can still represent it in-memory as a grid or whatever. You'll have a smaller table in memory but the set of states that you have to track as you move through it can be larger. Real tradeoff is between speed and space, though.
+
+** Books
+Can get much cheaper versions of these (international, etc.) from Alibris vs. Amazon.
+   - Compilers: Principles, Techniques, and Tools. Aho, Lam, Sethi. 2nd (2013) Ed.
+     - Some people think it's a bit dated but the newer edition maybe less so.
+   - Modern Compiler Implementation (in ML). Appel.
+   - Engineering a Compiler. Cooper, Torczon. 2nd Ed.
+   - Advanced Compiler Design and Implementation. Muchnick.

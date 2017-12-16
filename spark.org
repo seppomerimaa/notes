@@ -1,0 +1,17 @@
+* Spark
+
+** Terminology
+*** Transformation: RDD => RDD
+*** Action: RDD => value on the driver
+    - this forces evaluation duh.
+*** Stage: a series of transformations separate from other stages by actions
+*** Tasks: the executor-level work that has to be done for a single stage. So one task per partition per stage.
+*** Catalyst: query optimization engine. You only get the benefits of this to the extent that you're in DF / Dataset land.
+** Modes
+*** Master: local or yarn (or mesos or whatever)
+*** Deploy mode: client (driver runs on local machine) or cluster (driver runs in e.g. a yarn container)
+** Spark ML
+*** Transformer: DF => DF
+    - Can be for feature extraction or for making predictions from features
+*** Estimator: fits a model producing a transformer that does feature DF => prediction DF
+*** Pipeline: a DAG of DFs, transformers, and estimators

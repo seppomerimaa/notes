@@ -1,0 +1,86 @@
+* Concurrency and Parallelism
+
+mutexes
+spinlocks
+condition variables
+semaphores
+thread pools
+fork-join pools
+futures
+
+re: non-blocking IO ... is something like tokio fundamentally different from e.g. Scala Futures? Seems like Futures are only faux-non-blocking -- you have to have your separate thread pool that you're pushing the waiting off onto, and seemingly they're not actually using the OS non-blocking IO primitives like epoll and select...right?
+	- see http://www.baeldung.com/java-nio-selector for Java NIO thingy built on top of select (?) also
+	  https://docs.oracle.com/javase/7/docs/api/java/nio/channels/Selector.html
+
+Should also look into how epoll and select work....
+- https://jvns.ca/blog/2017/06/03/async-io-on-linux--select--poll--and-epoll/
+
+- OS process
+	- heavyweight (relatively) to start
+	- own their own system resources (eg, file handles, memory, etc.)
+	- isolated (one process dying doesn't kill others)
+	- almost certainly preemptively scheduled
+	- switching between them is relatively expensive (because they have so much state to get back into memory? And registers to
+	  change and all sorts of fun things like that -- https://en.wikipedia.org/wiki/Context_switch#Cost)
+- OS threads, scheduling, etc.
+	- mediumweight (relatively) -- less than a process, more than a green thread
+	- are owned / part of an OS process
+	- share memory and system resources with other threads in their OS process
+	- if one of them dies and crashes the process, they're all toast
+	- in linux there are kernel-land threads and user-land threads but the differences between the two are just user-land /
+	  kernel-land differences. Can be confused with green threads which people sometimes call user threads
+	  linux user-land threads are always preemptible. the kernel-land threads (from 2.6 on) are usually preemptible but not
+	  always
+	- Java threads, C threads, etc. are OS threads
+	- when a linux thread does blocking IO like calling read() the kernel notices this and takes that thread off the processor
+- Coroutines
+	- cooperatively scheduled control flow-y things...
+	- some running code creates a coroutine and passes control to it. Then at some point the coroutine can yield control back
+	  to the thing that passed control to it in the first place.
+	- so it's almost like method calls? If on a single thread, it is basically just method calls. But if you're doing this with
+	  multiple threads then you can have coroutine A yield to B, which is on a different thread; A gets blocked or suspended
+	  and something else can run on its thread while B runs on some other thread
+- Green Threads / Fibers
+	- some people distinguish green threads as preemptively scheduled and fibers as cooperatively scheduled...but unclear
+	  how universal that division is.
+	- language / VM-level emulation of OS threads
+	- usually much cheaper to create
+	- ...and switch between
+	- but there's also a perf overhead
+	- and you can get into a sad state if you do blocking I/O ... and get the OS thread suspended ... and get all the green
+	  threads on that OS thread suspended / stuck too -- unclear whether that's an implementation issue or an insupperable one?
+	- usually an M:N model -- M green threads mapped to N OS threads -- so thread pools are cool, ya know?
+- M:N threading -- mapping M user threads (green threads / fibers) to N OS threads
+	- 2 fibers on the same kernel thread cannot be executing at the same time -- which means they can't race each other
+	- fibers that do blocking IO will block all the other fibers on that kernel thread too (unless your library does something
+	  cute to shunt them off to another kernel thread?)
+- Futures
+- Actor Systems
+	- Erlang processes are pseudo-preemptively scheduled -- each process has a budget that it burns down as it does work at
+	  which point it yields to the scheduler. Also, Erland processes really are green threads, basically.
+	- Akka ones are apparently cooperatively scheduled
+	- GHC also does pseudo-preemptive scheduling by inserting a bunch of yields into your code after doing some analysis
+	  on it to see where it's OK to do that.
+- Different scheduling models -- cooperative, preemptive, fair(?)
+	- Cooperative: each process/thread/w/e decides when to yield to the scheduler
+	- Preemptive: the scheduler decides when to suspend or preempt the running process
+- What do Go, Erlang, et al. use?
+
+Case Study: Akka
+Akka in the simplest case uses a Dispatcher which maps actors to either a thread pool or a fork-join pool. There can be multiple dispatchers and each will have their own thread pool. If an actor blocks, that thread in the pool is blocked, so if you have lots of blocking IO going on you could have all of your threads stuck and everybody else doing nothing. So you would think OK let's do futures instead -- which is fine as long as you have a separate thread pool to run those futures on. Otherwise that future still has to run on a thread somewhere, there's no getting around that. So if you're dumb like I was you're just going to run all of your futures on the default dispatcher just like all of your other actors in which case there's really no point in even using futures, you might as well just block everything. So your real options are:
+- use futures with a dedicated, fixed-size thread pool for just the futures
+- use futures with a fork-join pool where you know that there's an upper limit on the number of futures you're going to create at any one time.
+- do blocking IO within an actor / pool of actors where that set of actors is on their own dispatcher backed by a thread pool -- this version can be especially appropriate when you have fixed IO resources like DB connections
+	See also http://doc.akka.io/docs/akka/current/scala/dispatchers.html
+	Question for self: if actor A asks actor B for some data and B has to do some IO ... are you basically chewing up 2 threads
+	with those 2 futures? Could you even get yourself deadlocked if you have multiple versions of A and they're on the same
+	thread pool as the futures for doing the IO...?
+
+Links:
+- https://medium.com/software-development-2/coroutines-and-fibers-why-and-when-5798f08464fd not very good but the things it in turn links to might be
+- http://www.informit.com/articles/article.aspx?p=101760 The Linux Process Scheduler (2003)
+- https://lwn.net/Articles/146861/ preempting threads in the Linux kernel
+- http://www.yolinux.com/TUTORIALS/LinuxTutorialPosixThreads.html pthreads tutorial + documentation
+- http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n4024.pdf fibers vs coroutines in C++
+- http://jlouisramblings.blogspot.com/2013/01/how-erlang-does-scheduling.html
+- https://hamidreza-s.github.io/erlang/scheduling/real-time/preemptive/migration/2016/02/09/erlang-scheduler-details.html more stuff about the erlang scheduler

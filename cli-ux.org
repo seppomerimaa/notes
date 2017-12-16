@@ -1,0 +1,25 @@
+* User Experience Design for Command Line Interfaces
+
+** Links
+   - [[https://blog.keras.io/user-experience-design-for-apis.html][UX Design for APIs (Keras)]]
+     - [[https://news.ycombinator.com/item?id=15752365][Related HN discussion]]
+   - [[http://www.drdobbs.com/windows/measuring-api-usability/184405654][Measuring API Usability]]
+   - [[https://blogs.msdn.microsoft.com/stevencl/tag/api-usability/][API Usability (MSDN)]]
+   - [[http://www.cs.cmu.edu/~NatProg/apiusability.html][Human-centered methods for improving API usability]]
+     - by Brad Myers, CMU
+     - other useful people: Steven Clarke (Microsoft), Jeff Stylos, Andrew Macvean (Google)
+     - Study 1: people "liked" class constructors with default values for required params later that you then have to set before you can safely use the instance. So like make a Foo, set its 'bar' field, then use it. Vs. Foo's constructor requiring a bar instance in the first place.
+       - But what does "liked" mean...?
+     - Study 2: nobody naturally comes up with the factory pattern, most people find it much slower / clunkier to use than just directly creating objects.
+       - Wonder how you would measure the downstream cost of this...
+       - I guess both here and above you could argue that they're focused on how people do with a new API on a little, greenfield task so maybe that tilts your value judgements.
+     - Study 3: people find methods faster if they're on the objects that are already at hand rather than off on some helper object / class.
+       - No shit.
+     - Study 4: SOAP is bad. 255 character long method names are bad. Bad documentation is bad.
+     - Consistency in naming etc. is good.
+     - API designers have a hard time figuring out what their users need / want -- but know they need to figure it out.
+     - Guava & Stripe as examples of good APIs.
+   - [[https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/45294.pdf][API Design Reviews at Scale]]: usability studies are tough / don't scale well. Usability-focused design reviews are better.
+     - Though it sounds like usability studies in a "lab setting" *were* useful, and more useful than reviews...just more costly, too.
+
+

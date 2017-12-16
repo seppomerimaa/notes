@@ -1,0 +1,29 @@
+* Luigi
+
+#+BEGIN_SRC python
+
+import os
+import sys
+module_path = os.path.abspath('/home/datascience/luigi/marin-forecasting-job')
+if module_path not in sys.path:
+    sys.path.append(module_path)
+if module_path+"/luigi.cfg" not in sys.path:
+    sys.path.append(module_path+"/luigi.cfg")
+  
+# should actually get the right thing now that luigi.cfg is on our path
+# from config import forecastingValidation
+# cfg = forecastingValidation()
+# cfg.rawdirname
+
+from download import DownloadPlotsData
+import luigi
+import datetime
+
+def run_data_pipeline(
+    param1,
+    param2
+):
+    task_obj = LuigiTask(param1, param2)
+    luigi.build([task_obj], local_scheduler=True)
+    return task_obj.output().path
+#+END_SRC

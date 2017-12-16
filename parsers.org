@@ -1,0 +1,30 @@
+Parsers!
+
+- context-free grammars
+- context expression grammars
+- parser generators
+- parser combinators
+- recursive descent parsers
+
+Deterministic & Non-Deterministic Finite Automata -- Sipser 1.1 & 1.2
+A DFA is defined by
+  - Q: a finite set of states
+  - Sigma: a finite set of inputs aka an alphabet
+  - delta: (Q x Sigma) --> Q state transition function
+  - q0 in Q start state
+  - F subset Q the set of accept states
+An NFA is almost the same but delta produces a set of states rather than a single state.
+
+Regularity: a language is regular if some finite automaton recognizes it.
+Regular operations:
+- Union: A union B is regular iff A and B are regular
+- Concatenation: A concat B is regular iff A and B are regular
+- Star: aka A concatenated with itself some k number of times where k >= 0 -- A* is regular iff A is
+
+Equivalence of DFAs and NFAs: take an NFA and list out all of the subsets of its Q. Construct a new DFA
+with one state for each of those. Then add in the transition functions by figuring out how an input affects
+each of the NFAs state sets.
+
+Once you have that equivalence in your pocket its very easy to establish the regularity of concatenation and star.
+
+==> Surprise! Regexes are just *expressions* built up from these 3 regular language operations.

@@ -1,0 +1,8 @@
+* Books
+- The Effective Engineer
+- The Pragmatic Programmer
+- Refactoring
+
+* Links
+- [[https://www.sandimetz.com/blog/2016/1/20/the-wrong-abstraction][The Wrong Abstraction]] Sandi Metz -- don't labor under the wrong abstraction. Undo them. E.g. inline a method that's no longer the right abstraction, then break it down correctly).
+- [[https://www.destroyallsoftware.com/talks/boundaries][Boundaries]] Gary Bernhardt -- aka the functional core, imperative shell talk.

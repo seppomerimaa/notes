@@ -1,0 +1,38 @@
+\documentclass{article} or something like that at the beginning
+
+Vertical text
+\usepackage{eso-pic, rotating, graphicx}
+% scalebox controls the size of the text
+% put is the coords (?) where it goes -- first is x-axis, second is y-axis from bottom left!
+% rotatebox does what you would expect
+\AddToShipoutPicture{\put(40,500){\rotatebox{90}{\scalebox{1.8}{Education}}}}
+
+Sections without numbers:
+\section*{Some unnumbered section}
+
+Custom bullets
+\usepackage{enumitem}
+then
+\begin{itemize}[label=\textbullet]
+see full docs here: http://mirror.jmu.edu/pub/CTAN/macros/latex/contrib/enumitem/enumitem.pdf
+and this list of symbols: http://mirrors.rit.edu/CTAN/info/symbols/comprehensive/symbols-a4.pdf
+
+Tabs
+\begin{tabbing}
+\hspace*{2cm}\=\hspace*{3cm}\= \kill
+column1a \> column2a \> column3a \\
+column1b \> column2b \> column3b 
+\end{tabbing}
+
+Fonts:
+http://www.cl.cam.ac.uk/~rf10/pstex/latexcommands.htm
+\fontfamily{garamond}
+\fontsize{12}{15}
+\selectfont
+etc. but tbh the defaults are pretty reasonable
+
+Emacs / Auctex commands:
+- C-c C-a to compile etc.
+- C-c C-e to start a new itemized list. M-ret to create next item in the list
+- C-c C-s to create a new section
+

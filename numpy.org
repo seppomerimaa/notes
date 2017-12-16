@@ -1,0 +1,52 @@
+* Numpy
+
+Arrays:
+http://www.scipy-lectures.org/intro/numpy/array_object.html
+
+np.arange(10) # 0 to n-1
+np.arange(1,9,2) # 1 to 9 (exclusive) by 2
+np.linspace(0,1,6) # 0 to 1 (inclusive) w/ array len == 6
+np.linspace(0,1,5,endpoint=False) # 0 to 1 (exclusive) w/ array len == 5
+
+np.zeros(10, dtype=int)
+np.ones((3,5), dtype=float) # make a 3 row 5 col matrix of 1.0
+np.full((3,5), 3.14) # make a 3x5 matrix of 3.14
+np.random((3,5)) # 3x5 matrix of random doubles
+
+Methods on NP arrays:
+- ndim -- number of dims
+- shape -- sizes of all the dims
+- size -- product of all the dim sizes
+
+NP Axes
+0 is row
+1 is col
+etc...
+...somewhat confusingly, if you do some operation with axis=0 that actually means you're operating on columns...?
+like with sorting...
+Maybe it's best to think of it like you're moving along whatever axis. So you're moving across the rows?
+
+NP array slices are just views of the data not copies, which is different from normal Python list behavior.
+
+grid = np.array([[1, 2, 3],
+                 [4, 5, 6]])
+np.concatenate([grid, grid]) # this concatenates along the 0th axis aka stacks grid on top of its
+np.concatenate([grid, grid], axis=1) # this does it along the 1th axis aka puts grid side by side with itself
+np.vstack and np.hstack are similar but maybe signal intent more clearly?
+
+Aggregations
+These are all useful:
+sum, prod, mean, std, var, min, max, median, percentile, any, all
+prefix with nan to get the nan-safe version
+they usually can take an axis arg if you want to do that
+
+You can use an array / matrix of booleans as a mask
+x = np.arange(1,100)
+x[x < 25]
+would give you back just the things where x < 25 is true
+
+You can also use a list of ints to do multi indexing
+ind = [2,5,7]
+x = np.arange(1, 100)
+x[ind]
+gives you back the things at indices 2, 5, and 7

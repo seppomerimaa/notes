@@ -1,0 +1,59 @@
+* Options
+
+** Basic Questions
+   - How many stock options are you getting?
+   - What is the vesting schedule for the options?
+   - What is the (approx.) strike / exercise price of the options? (Can be squiggly till the date you actually join)
+   - How many shares are outstanding?
+   - What is the company's current valuation?
+   - What is the fair market value of the company / its shares? Aka what's the 409A appraisal?
+   - How long after leaving do you have to exercise your options?
+   - What are they offering -- ISOs, NSOs (or RSUs? Unlikely for a startup)
+
+** Less Basic Questions
+   - Can you get a deal where after X years at the company you get Y years to exercise your options? E.g. x=3, Y=7
+   - Can you see the cap table?
+   - How much money are you looking to raise over the next 3-5 years?
+
+** Advanced Questions
+   - Can you sell your stock to an outside investor? Under what conditions?
+   - What other downside protections do the VCs have?
+   - Do the VCs have participation?
+   - Can you early exercise your options? (Self: do you really want to?)
+   - Do your options vest faster if the company is acquired? If you are terminated?
+
+
+** Tax Scenarios
+*** You exercise some options, wait a year, then sell the stock
+    - So we're assuming you've already had an IPO, or have one between when you exercise and when you sell.
+    - Let's say your strike price is $2 and the fair market value at time of exercise is $6 and the price at the time you sell is $10
+    - AMT taxes: $(shares * (6 - 2)) * 25\%$ so basically you pay tax on the difference between strike price and fair market value.
+    - Capital gains taxes when you sell: $(shares * (10 - 2) * taxrate$ Almost looks like you're getting taxed twice on some of that, no?
+    - Again this is assuming you've waited another year after exercising so that you get to pay long-term capital gains instead of income tax.
+*** You do a same-day exercise + sell
+    - E.g. you wait till your company IPOs / gets acquired before you exercise or sell anything.
+    - Let's say again your strike price is $2 and the stock price is $10
+    - Taxes: $(shares * (10 - 2)) * tr$ where $tr$ is the *ordinary income* tax rate.
+    - Could sting a little, huh?
+*** Early exercise (and file your 83(b) !)
+    - You exercise with fair market price == exercise price + file your 83(b) and pay AMT on ... $0! Yay.
+    - Downside: you've gotta actually pay the money to exercise the options. And if your company gets a shit acquisition or goes bankrupt, that money is gone.
+    - Usually if you quit / are terminated the company buys back you *unvested* shares at the exercise price so that's a wash at least.
+    - Personally: would be comfortable-ish with early exercising an amount roughly equal to signing bonus...though that sorta discounts the actual value of the signing bonsu :-/
+    - Wealthfront advice: is exercise price is < $0.10 go for it; if probability of successful IPO is really, really high, go for it; otherwise maybe don't.
+
+** Investor Downside Protections to be on the lookout for
+   - Liquidation preferences
+   - Different classes of stock -- common / preferred is a common split, but sometimes there are senior preferred too
+   - Minimum IPOs -- some investors get clauses mandating a minimum IPO. So sometimes they can just block the IPO outright sometimes they get extra shares if the IPO price is below a certain threshold.
+   - Different classes of common stock with different levels of voting power
+
+** Links
+   - [[https://danluu.com/startup-options/][Dan Luu on options vs. cash (hint: cash is king)]]
+   - [[https://blog.wealthfront.com/when-to-exercise-stock-options/][Wealthfront post on early exercise]]
+   - [[https://jvns.ca/blog/2015/12/30/do-the-math-on-your-stock-options/][An overview of how to do the math on your options / things to think about]]
+   - [[https://www.fenwick.com/publications/pages/explanation-of-certain-terms-used-in-venture-financing-terms-survey.aspx][All sorts of technical stock terminology]]
+   - [[https://blog.wealthfront.com/always-file-your-83b/][Wealthfront: if you early exercise, file your 83(b), damn it]]
+   - [[https://blog.wealthfront.com/409a/][Wealthfront on 409a appraisals]]
+   - [[https://blog.wealthfront.com/improving-tax-results-stock-option-restricted-stock-grant/][Wealthfront on options and taxes]] [[https://blog.wealthfront.com/improving-tax-results-stock-options-restricted-stock-grants/][Part 2]] [[https://blog.wealthfront.com/improving-tax-results-stock-options-restricted-stock-grants-2/][Part 3]]
+   - [[https://github.com/jlevy/og-equity-compensation][Big ass guide to equity compensation]]

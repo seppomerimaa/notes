@@ -1,0 +1,215 @@
+* Emacs
+
+** Setup
+brew install emacs
+add to ~/.bash_profile:
+
+# homebrew-installed version of emacs
+# need to remember to update alias when you update...
+alias emacs="/usr/local/Cellar/emacs/25.2/bin/emacs"
+	
+start with this: https://blog.aaronbieber.com/2015/05/24/from-vim-to-emacs-in-fourteen-days.html
+add helm as a required package: https://github.com/emacs-helm/helm
+
+*** Package Management
+require -- this is how you load a package (once) (that's already been installed)
+but better to use use-package: https://github.com/jwiegley/use-package
+http://cachestocaches.com/2015/8/getting-started-use-package/
+under the covers use-package installs the package and then loads it so it's like require++
+
+*** General Config
+https://blog.aaronbieber.com/2015/07/05/a-gentle-introduction-to-emacs-configuration.html
+
+*** Config initialization file loading: https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html
+1) ~/.emacs
+2) ~/.emacs.el
+3) ~/.emacs.d/init.el
+
+*** Evil Mode Configuration
+https://blog.aaronbieber.com/2016/01/23/living-in-evil.html
+
+** Themes
+mkdir ~/.emacs.d/themes
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(load-theme 'afterglow t)
+
+git clone https://github.com/sjahl/emacs-theme-afterglow
+copy afterglow-theme.el to the themes dir
+
+within emacs: M-x load-theme RET afterglow
+
+see also https://www.emacswiki.org/emacs/CustomThemes
+
+** Commands
+
+Theoretically C-c is reserved for user-defined key chords. So we have C-c a to bring up org-agenda as a user-defined key chord, that's not something that orgmode is doing by itself. F5-F9 are for user-defined things too.'
+
+M-x -- execute a command
+C-h k -- followed by a keypress, gives you help info about the key
+C-h ? -- whole help menu
+C-h t -- opens the emacs tutorial
+C-h f -- get help on a function
+C-h v -- get help on a variable and see its current value
+C-x b -- back to previous buffer
+
+M-x load-file -- duh. Useful for reloading
+
+C-s forward incremental search. C-s again to go to next match
+C-r reverse incremental search. C-r again to go to previous match
+
+M-x ielm -- elisp shell
+
+M-; comment out selected block
+
+** Helm:
+C-j complete
+C-l up a dir level (aka quickly delete stuff)
+
+** Shell:
+M-x shell -- run whatever your default shell is
+M-x term -- emacs terminal emulator
+M-x eshell -- emacs' very own shell (think zsh or fish or bash)
+	https://www.masteringemacs.org/article/running-shells-in-emacs-overview
+
+** Tramp
+- C-x C-f (just normal file find)
+- /scp: to start
+- type + arrows + C-J to get the host you want
+- C-j again to get the :
+- type whatever file you wanna edit
+
+** Window Management -- these are (almost) all just normal Vim commands
+- C-w j/k/h/l to move between them
+- C-x o / C-w C-w to cycle between them
+- C-w o to close all other windows
+- C-w v vertical split
+- C-w s horizontal split
+
+** Helm+Projectile
+Need to get the file in the project open by some other means the very first time
+C-c p h -- do all the things
+C-c p -- general helm prefix
+C-c p p -- switch to project
+
+** Magit
+C-x g --> magit-status
+Then n for next section and p for previous section within magit stuffs.
+q to close
+tab closes/opens sections / subsections
+s to stage, u to unstage
+C-SPC sets a mark and then you can move w/ n or p
+You can stage just hunks with a single file using C-SPC
+Just within the magit-status staged/unstaged sections you can use C-SPC and s/u to stage files en masse
+C C to open commit window
+	write your message
+	C-c C-c to finish the commit (after you write it?)
+P (that's uppercase) to open push window
+l l to open up an interactive log
+v revert window
+magit-reset-hard --> HEAD~2 hard resets last 2 commits
+
+** LaTeX
+https://www.gnu.org/software/auctex/manual/auctex.html#Quick-Start
+
+C-c C-c gives you a bunch of commands to pick from. Default is view.
+	if you have (setq Tex-PDF-mode t) when you save you will also compile so viewing
+	after saving will let you see the latest version. Yay.
+C-c C-q C-s auto-formats section
+C-c C-s automagically create sections
+C-c C-e to itemize, etc. automatically
+C-c RET is general LaTeX macro command
+
+Look more at this later:
+https://tex.stackexchange.com/questions/50827/a-simpletons-guide-to-tex-workwow-with-emacs
+
+** OrgMode
+- C-c C-t to run TODO which will mark an existing one as closed
+- C-c C-x M creates a new TODO heading. NB: that's a capital M which matters
+- [[link][text]] creates a link. It'll get collapsed when you close the tag -- don't freak out.
+  - C-c C-o while cursor is on the link to open it.
+- In another file, do C-c l to copy a link to that local file to your org mode link store. Then back in an org mode file do C-c C-l and you'll do through some steps to pick which link you want and then pick a description/text for the link and voila you shall have a link.
+- org-toggle-link-display is what you want if you want to edit links...which you probably don't want to do for local file links becayse they're hairy as hell.
+- Shift-Tab cycles between outline levels -- single *, double **, everything...
+- M-left/right promotes/demotes a section
+- C-c C-d to add a deadline
+- C-c C-s to schedule a task.
+- C-c C-x C-s archives a subtree.
+- C-<n> S-tab globally unfoods up to level n but nothing below
+- C-<n> C-c tab unfolds up to level n but nothing below
+
+
+
+   1. Blah blah
+   2. Something something
+   3. Person :: and a description of them
+   4. *Bold* does what you would think. As does /ital/ and _underline_
+   5. =code is like this=
+   6. ~verbatim~
+   7. +strike through+
+
+** Org-Capture
+http://sachachua.com/blog/2015/02/learn-take-notes-efficiently-org-mode/
+C-c c to open capture mode
+t to file a new task
+C-c C-s while filling out the task to schedule
+C-c C-c to write it out to whatever file is your default
+C-c C-w to refile
+C-c C-k to cancel / quit
+
+** Org-refile
+In an org file: C-c C-w to refile -- this just lets you move some subtree to some other subtree in the file.
+Once you set up org-refile-targets you can get 1) more depth than just the toplevel targets in the current file you're in and 2) targets from other files.
+
+C-u C-c C-w just jumps to that subtree, it doesn't actually move anything around -- handy!
+
+** Org Workflow / Archiving Plan
+We have different top-level project bullets each with their own deadline, schedule date, and archive heading that they go to. We either work on and finish them or cancel them but either way we eventually archive the whole subtree all at once so it lands in one place in the archive file.
+
+Tasks can just go to the Tasks heading and get archived individually to the Tasks heading in the archive file.
+
+Categories are for toplevel heading to make things more readable in agenda mode, nothing else.
+
+Tags are to tie things together across project blocks etc.
+C-c C-q to edit tags
+TAB in the tag editor buffer will bring up a completion list. Finish with a : and then
+TAB again to get the next completion list.
+
+** File Local Variables
+    - They are extra variables that are written into the file itself.
+    - Can be at the top of a file (or second line if 1st line is a script interpreter line like shebang):
+    -*- mode: c; var: value; ... -*-
+    with whatever comment symbol is appropriate for your file type before that
+    - Or can be at bottom of file:
+    /* Local Variables: */
+    /* mode: c */
+    /* comment-column: 0 */
+    /* End: */
+    - Just edit them straight in the file, ezpz
+
+** Bookmarks
+   - C-x r m <bookmark> -- save current position with given name
+   - C-x r M <bookmark> -- same but don't override existing bookmarks
+   - C-x r l -- list all bookmarks
+   - C-x r b <bookmark> -- go to given bookmark
+   - helm-bookmark-rename -- need when you want to bookmark a helm search e.g. to get to a dir quickly
+
+** Ensime
+   - [[http://ensime.org/build_tools/maven/][Maven setup]] -- basically add the snippet to your `~/.m2/settings.xml` and run `mvn ensime:generate` to get started
+   - Then in emacs M-x ensime -- note that you need to be in a file in a project with a .ensime or it will be sad
+   - M-x ensime-shutdown
+   - Create your .ensime in your toplevel dir of a multilevel project. Might need to do a fresh compile of whole project to get all of your deps to show up properly.
+   - When in doubt, delete .ensime_cache/ and regenerate it.
+   - See the *ENSIME...* buffers for errors
+   - [[http://ensime.org/editors/emacs/cheat_sheet/][Cheatsheet]]
+
+** Python / Elpy
+   - Elpy as Python package thingy
+   - Make sure to install all the pip things you need and check with M-x elpy-config
+   - Set Python interpreter to python3
+   - M-x pyvenv-workon to active venvs in ~/.virtualenvs
+   - M-x pyvenv-active to active a venv in a directory your specify
+     - NB: need to create your venv with virtualenv not with python3 itself for this to work
+   - C-c C-z to open / switch to Python REPL
+   - C-c C-c to send whole buffer or highlighted region to REPL
+   - C-RET to send current line / statement to REPL
+   - C-c C-k to kill python REPL
